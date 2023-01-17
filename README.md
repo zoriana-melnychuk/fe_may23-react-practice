@@ -1,6 +1,6 @@
 # React Product Categories Practice
 
-> Here is [the working version](https://mate-academy.github.io/react_product-categories-practice/)
+> Here is [the working version](https://mgrinko.github.io/js-oct22_react-practice/)
 
 You are given markup for a table of products and 3 arrays. 
 Implement as much options below as you can:
@@ -32,4 +32,4 @@ Implement as much options below as you can:
 
 ## Your DEMO LINK
 
-- [DEMO LINK](https://<your-account>.github.io/react_product-categories-practice/)
+- [DEMO LINK](https://<your-account>.github.io/js-oct22_react-practice/)
