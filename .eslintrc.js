@@ -1,12 +1,17 @@
 module.exports = {
-  extends: ['@mate-academy/eslint-config-react-typescript', 'plugin:cypress/recommended'],
+  extends: ['@mate-academy/eslint-config-react', 'plugin:cypress/recommended'],
   rules: {
-    'max-len': ['error', {
-      ignoreTemplateLiterals: true,
-      ignoreComments: true,
+    'import/no-extraneous-dependencies': ['error', {
+      devDependencies: true,
+      optionalDependencies: false,
+      peerDependencies: false,
     }],
-    'jsx-a11y/label-has-associated-control': ["error", {
-      assert: "either",
+    'react/prop-types': 0,
+    'max-len': 0,
+    'jsx-a11y/label-has-associated-control': ['error', {
+      assert: 'either',
     }],
+    'jsx-a11y/control-has-associated-label': 'off',
+    'jsx-a11y/accessible-emoji': 'off',
   },
 };
