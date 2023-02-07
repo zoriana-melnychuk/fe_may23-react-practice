@@ -6,7 +6,7 @@ import './App.scss';
 // import productsFromServer from './api/products';
 
 // const products = productsFromServer.map((product) => {
-//   const category = null; // find by prodyct.categoryId
+//   const category = null; // find by product.categoryId
 //   const user = null; // find by category.ownerId
 
 //   return null;
