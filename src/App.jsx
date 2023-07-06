@@ -22,13 +22,38 @@ const products = productsFromServer.map((product) => {
   };
 });
 
+export const findProduct = (productId) => {
+  const product = products.find(product1 => product1.id === productId);
+
+  return product.name;
+};
+
+export const filterProducts = (products1, query) => {
+  let visibleProducts = [...products1];
+
+  if (query.length) {
+    visibleProducts = visibleProducts.filter((product) => {
+      const normalizedProductName = product.name.trim().toLowerCase();
+      const normalizedQuery = query.trim().toLowerCase();
+
+      return normalizedProductName.includes(normalizedQuery);
+    });
+  }
+
+  return visibleProducts;
+};
+
 export const App = () => {
   const [activeUserId, setActiveUserId] = useState('');
-  const [selectedCategoryId, setSelectedCategoryId] = useState('');
+  const [selectedCategoryId, setSelectedCategoryId] = useState([]);
 
-  let visibleProducts = [...products].filter(
-    product => product.user && product.user.id === activeUserId,
-  );
+  const [query, setQuery] = useState('');
+
+  const visibleProducts = filterProducts(products, query);
+
+  // const visibleProducts = [...products].filter(
+  //   product => product.user && product.user.id === activeUserId,
+  // );
 
   return (
     <div className="section">
@@ -71,7 +96,9 @@ export const App = () => {
                   type="text"
                   className="input"
                   placeholder="Search"
-                  value="qwe"
+                  onChange={(event) => {
+                    setQuery(event.target.value);
+                  }}
                 />
 
                 <span className="icon is-left">
@@ -94,6 +121,9 @@ export const App = () => {
                 href="#/"
                 data-cy="AllCategories"
                 className="button is-success mr-6 is-outlined"
+                onClick={
+                  () => selectedCategoryId([])
+                }
               >
                 All
               </a>
@@ -107,10 +137,18 @@ export const App = () => {
                     className={
                       cn({
                         'button mr-2 my-1': true,
-                        'is-info': selectedCategoryId === category.id,
+                        'is-info': selectedCategoryId.includes(category.id),
                       })
                     }
-                    onClick={() => setSelectedCategoryId(category.id)}
+                    onClick={
+                      () => setSelectedCategoryId(
+                        selectedCategoryId.includes(category.id)
+                          ? selectedCategoryId.filter(
+                            categoryToCheck => categoryToCheck !== category.id,
+                          )
+                          : [...selectedCategoryId, category.id],
+                      )
+                    }
                   >
                     {category.title}
                   </a>
@@ -192,12 +230,12 @@ export const App = () => {
             </thead>
 
             <tbody>
-              {productsFromServer.map((product) => {
+              {visibleProducts.map((product) => {
                 const category = categoriesFromServer.find(
-                  categoryToCheck => categoryToCheck.id === product.categoryId
+                  categoryToCheck => categoryToCheck === product.category,
                 );
-                const owner = category
-                  ? usersFromServer.find(user => user.id === category.ownerId)
+                const owner = product
+                  ? usersFromServer.find(user => user === product.user)
                   : null;
 
                 return (
@@ -211,22 +249,24 @@ export const App = () => {
                     </td>
 
                     <td data-cy="ProductCategory">
-                      {`${category.icon} - ${category.title}`}
+                      {category ? `${category.icon} - ${category.title}` : ''}
                     </td>
 
                     <td
                       data-cy="ProductUser"
                       className={cn({
-                        'has-text-link': owner.sex === 'm',
-                        'has-text-danger': owner.sex === 'f',
+                        'has-text-link': owner && owner.sex === 'm',
+                        'has-text-danger': owner && owner.sex === 'f',
                       })}
                     >
-                      {owner.name}
+                      {owner ? owner.name : ''}
                     </td>
+
                   </tr>
                 );
               })}
             </tbody>
+
           </table>
         </div>
       </div>
