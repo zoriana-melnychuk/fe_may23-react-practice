@@ -230,6 +230,7 @@ export const App = () => {
             </thead>
 
             <tbody>
+              {/* products */}
               {visibleProducts.map((product) => {
                 const category = categoriesFromServer.find(
                   categoryToCheck => categoryToCheck === product.category,
